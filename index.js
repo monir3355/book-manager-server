@@ -6,9 +6,6 @@ const port = process.env.PORT || 5000;
 // middleware
 app.use(cors());
 app.use(express.json());
-// bookManager
-// sdRwmb8cOMcl367O
-// console.log(process.env.DB_USER);
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ztxo0js.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -31,6 +28,12 @@ async function run() {
     // get all books
     app.get("/allBooks", async (req, res) => {
       const result = await bookCollection.find().toArray();
+      res.send(result);
+    });
+    app.get("/details/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const result = await bookCollection.findOne(filter);
       res.send(result);
     });
     // book post
